@@ -1,0 +1,24 @@
+{
+  "name": "blockchain",
+  "version": "1.0.0",
+  "description": "Simple blockchain project in Javascript",
+  "main": "src/index.js",
+  "dependencies": {
+    "elliptic": "^6.5.3",
+    "crypto-js": "^4.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KittLao/BlockChain.git"
+  },
+  "author": "Kit Lao",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KittLao/BlockChain/issues"
+  },
+  "homepage": "https://github.com/KittLao/BlockChain#readme"
+}
