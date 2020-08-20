@@ -3,8 +3,8 @@ const EC = require("elliptic").ec;
 const ec = new EC("secp256k1");
 
 // Use 40 character hashes to create signatures.
-// const SHA256 = require("crypto-js/sha256");
-const crypto = require("crypto");
+const SHA256 = require("crypto-js/sha256");
+// const crypto = require("crypto");
 
 class Transaction {
     /**
@@ -26,14 +26,15 @@ class Transaction {
     * @returns {string}
     */
     calculateHash() {
-        // return SHA256(this.fromAddress + 
-        //     this.toAddress + 
-        //     this.amount).toString();
-        return crypto.createHash('sha256')
-        .update(this.fromAddress + 
+        return SHA256(this.fromAddress + 
             this.toAddress + 
             this.amount + 
-            this.timestamp).digest('hex');
+            this.timestamp).toString();
+        // return crypto.createHash('sha256')
+        // .update(this.fromAddress + 
+        //     this.toAddress + 
+        //     this.amount + 
+        //     this.timestamp).digest('hex');
     }
 
     /**

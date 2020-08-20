@@ -1,5 +1,5 @@
-// const SHA256 = require("crypto-js/sha256");
-const crypto = require("crypto");
+const SHA256 = require("crypto-js/sha256");
+// const crypto = require("crypto");
 
 class Block {
     /**
@@ -29,15 +29,15 @@ class Block {
     * @returns {string}
     */
     calculateHash() {
-        // return SHA256(this.previousHash + 
-        //     this.timestamp + 
-        //     JSON.stringify(this.transactions) + 
-        //     this.nonce).toString();
-        return crypto.createHash('sha256')
-        .update(this.previousHash + 
+        return SHA256(this.previousHash + 
             this.timestamp + 
             JSON.stringify(this.transactions) + 
-            this.nonce).digest('hex');
+            this.nonce).toString();
+        // return crypto.createHash('sha256')
+        // .update(this.previousHash + 
+        //     this.timestamp + 
+        //     JSON.stringify(this.transactions) + 
+        //     this.nonce).digest('hex');
     }
 
     /**
