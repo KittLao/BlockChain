@@ -2,27 +2,50 @@
 const EC = require("elliptic").ec;
 const ec = new EC("secp256k1");
 
-// Used for creating hashes for creating signatures.
-const SHA256 = require("crypto-js/sha256");
+// Use 40 character hashes to create signatures.
+// const SHA256 = require("crypto-js/sha256");
+const crypto = require("crypto");
 
 class Transaction {
-    // :publicKey: -> :publicKey: -> :double:
+    /**
+    * @param {string} fromAddress
+    * @param {string} toAddress
+    * @param {int} amount
+    */
     constructor(fromAddress, toAddress, amount) {
         this.fromAddress = fromAddress;
         this.toAddress = toAddress;
         this.amount = amount;
+        this.timestamp = Date.now();
         this.signature = null;
     }
 
+    /**
+    * Creates a SHA256 hash of the transaction
+    *
+    * @returns {string}
+    */
     calculateHash() {
-        return SHA256(this.fromAddress + 
+        // return SHA256(this.fromAddress + 
+        //     this.toAddress + 
+        //     this.amount).toString();
+        return crypto.createHash('sha256')
+        .update(this.fromAddress + 
             this.toAddress + 
-            this.amount).toString();
+            this.amount + 
+            this.timestamp).digest('hex');
     }
 
+    /**
+    * Signs a transaction with the given signingKey (which is an Elliptic keypair
+    * object that contains a private key). The signature is then stored inside the
+    * transaction object and later stored on the blockchain.
+    *
+    * @param {string} signingKey
+    */
     signTransaction(signingKey) {
-        // Since publicKey is linked o to the private key, 
-        // the fromAddress needs to equal the publicKey.
+        // You can only send a transaction from the wallet that is linked to your
+        // key. So here we check if the fromAddress matches your publicKey
         if(signingKey.getPublic("hex") !== this.fromAddress) {
             throw new Error("You cannoy sign transactions for other wallets");
         }
@@ -34,24 +57,27 @@ class Transaction {
         this.signature = sig.toDER("hex");
     }
 
-    // Verifies transaction is correct
+    /**
+    * Checks if the signature is valid (transaction has not been tampered with).
+    * It uses the fromAddress as the public key.
+    *
+    * @returns {boolean}
+    */
     isValid() {
-        // If transaction was the intial transaction (so like
-        // amount obtained from mining rewards), automatically
-        // valid.
+        // If the transaction doesn't have a from address we assume it's a
+        // mining reward and that it's valid.
         if(this.fromAddress === null) return true;
 
         // Needs to make sure person who is making the transaction
-        // signs it.
+        // has signed it.
         if(!this.signature || this.signTransaction.length === 0) {
             throw new Error("No signature in this transaction");
         }
 
-        // Verify signature was signed by correct key from person
-        // making the transaction. 
+        // The public key from the person's address.
         const publicKey = ec.keyFromPublic(this.fromAddress, "hex");
         // Verify that the hash of this block has been signed by
-        // the signature
+        // the signature.
         return publicKey.verify(this.calculateHash(), this.signature);
     }
 }

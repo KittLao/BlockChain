@@ -11,5 +11,9 @@ const key = ec.genKeyPair();
 const publicKey = key.getPublic("hex");
 const privateKey = key.getPrivate("hex");
 
-console.log("Private key: " + privateKey);
-console.log("Public key: " + publicKey);
+// Print the keys to the console
+console.log();
+console.log('Your public key (also your wallet address, freely shareable)\n', publicKey);
+
+console.log();
+console.log('Your private key (keep this secret! To sign transactions)\n', privateKey);

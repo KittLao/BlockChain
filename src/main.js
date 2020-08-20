@@ -10,14 +10,22 @@ const myWalletAddress = myKey.getPublic("hex");
 
 // BlockChain and a transaction using my wallet.
 let KitCoin = new BlockChain();
-const tx1 = new Transaction(myWalletAddress, "public key goes here", 10);
+
+// Mine the genesis block to get ez 100 rewards.
+KitCoin.minePendingTransactions(myWalletAddress);
+console.log("Balance: " + KitCoin.getBalanceOfAddress(myWalletAddress));
+
+// Spend some rewards
+const tx1 = new Transaction(myWalletAddress, "public key goes here", 50);
 tx1.signTransaction(myKey);
 KitCoin.addTransaction(tx1);
 
+const tx2 = new Transaction(myWalletAddress, "public key goes here", 60);
+tx2.signTransaction(myKey);
+KitCoin.addTransaction(tx2);
+
+// Mine again
 console.log("\nStarting the miner...");
 KitCoin.minePendingTransactions(myWalletAddress);
-console.log("Balance: " + KitCoin.getBlanceOfAddress(myWalletAddress));
+console.log("Balance: " + KitCoin.getBalanceOfAddress(myWalletAddress));
 
-// console.log("\nStarting the miner...");
-// KitCoin.minePendingTransactions(myWalletAddress);
-// console.log("Balance: " + KitCoin.getBlanceOfAddress(myWalletAddress));
