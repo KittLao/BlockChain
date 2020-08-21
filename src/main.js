@@ -8,6 +8,7 @@ const ec = new EC("secp256k1");
 const myKey = ec.keyFromPrivate("04de2b0ffe90eb1db4e3f196d462580e209a54a3693b88ef6d886a484641253a6cb14e8db5de63af1983e7014bfab1d272f46c65862fb2596ec2c8d50cf255e7cd");
 const myWalletAddress = myKey.getPublic("hex");
 
+
 // BlockChain and a transaction using my wallet.
 let KitCoin = new BlockChain();
 

@@ -73,10 +73,10 @@ class BlockChain {
             throw new Error('Transaction amount should be higher than 0');
         }
           
-        // Making sure that the amount sent is not greater than existing balance
-        if (this.getBalanceOfAddress(transaction.fromAddress) < transaction.amount) {
-            throw new Error('Not enough rewards in balance');
-        }
+        // // Making sure that the amount sent is not greater than existing balance
+        // if (this.getBalanceOfAddress(transaction.fromAddress) < transaction.amount) {
+        //     throw new Error('Not enough rewards in balance');
+        // }
 
         this.pendingTransactions.push(transaction);
         console.log("Transaction successfully added.");
